@@ -5,6 +5,7 @@
  *      Author: bach
  */
 
+
 #include "UART.h"
 
 extern UART_HandleTypeDef huart2;
@@ -20,9 +21,8 @@ void uart_Init(void) {
  * para: mode - the current number mode
  * retval: none
  * */
-void uart_SendMode(uint8_t mode) {
-	if (mode > 4 || mode == 0)
-		return;
+void UARTSendMode(uint8_t mode)
+{
 	char str[45];
 	uint16_t len = sprintf(str, "!MODE:%d#\n", mode);
 	HAL_UART_Transmit(&huart2, (uint8_t*) str, len, 10);
@@ -32,18 +32,18 @@ void uart_SendMode(uint8_t mode) {
  * 			number - the value of timers
  * retval: none
  * */
-void uart_SendTimeTraffic(uint8_t id, uint16_t number) {
-	if (id > 1)
-		return;
+void UARTCountdownTrafficTime(uint8_t id,uint16_t time)
+{
 	char str[20];
-	uint16_t len = sprintf(str, "!7SEG%d:%d#\n", id, number);
+	uint16_t len = sprintf(str, "!7SEG%d:%d#\n", id, time);
 	HAL_UART_Transmit(&huart2, (uint8_t*) str, len, 10);
 }
 /*brief: send the red buffer in RED_ADJUSTMENT
  * para:	number - the value of buffers
  * retval: none
  * */
-void uart_SendBufferRed(uint16_t number) {
+void UARTSendBufferRed(uint16_t number)
+{
 	char str[20];
 	uint16_t len = sprintf(str, "!RED:%d#\n", number);
 	HAL_UART_Transmit(&huart2, (uint8_t*) str, len, 10);
@@ -52,7 +52,7 @@ void uart_SendBufferRed(uint16_t number) {
  * para:	number - the value of buffers
  * retval: none
  * */
-void uart_SendBufferGreen(uint16_t number) {
+void UARTSendBufferGreen(uint16_t number) {
 	char str[20];
 	uint16_t len = sprintf(str, "!GREEN:%d#\n", number);
 	HAL_UART_Transmit(&huart2, (uint8_t*) str, len, 10);
@@ -61,7 +61,7 @@ void uart_SendBufferGreen(uint16_t number) {
  * para:	number - the value of buffers
  * retval: none
  * */
-void uart_SendBufferYellow(uint16_t number) {
+void UARTSendBufferYellow(uint16_t number) {
 	char str[20];
 	uint16_t len = sprintf(str, "!YELLOW:%d#\n", number);
 	HAL_UART_Transmit(&huart2, (uint8_t*) str, len, 10);
