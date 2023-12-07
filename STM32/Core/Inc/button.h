@@ -1,7 +1,7 @@
 /*
  * button.h
  *
- *  Created on: Dec 7, 2023
+ *  Created on: Dec 8, 2023
  *      Author: bach
  */
 
@@ -21,6 +21,7 @@ int isButton2Pressed();
 
 int isButton3Pressed();
 
+int isButton4Pressed();
 void getKeyInput();
 
 
