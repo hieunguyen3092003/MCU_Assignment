@@ -7,6 +7,7 @@
 
 #include "button.h"
 
+//BUTTON 1 PROCESS
 int key1_reg0 = NORMAL_STATE;
 int key1_reg1 = NORMAL_STATE;
 int key1_reg2 = NORMAL_STATE; // #define NORMAL_STATE  GPIO_PIN_SET
@@ -24,11 +25,18 @@ int key3_reg1 = NORMAL_STATE;
 int key3_reg2 = NORMAL_STATE; // #define NORMAL_STATE  GPIO_PIN_SET
 int key3_reg3 = NORMAL_STATE; // key3_reg3 dùng để xử lý nhấn đè
 
+//BUTTON 4 PROCESS
+int key4_reg0 = NORMAL_STATE;
+int key4_reg1 = NORMAL_STATE;
+int key4_reg2 = NORMAL_STATE; // #define NORMAL_STATE  GPIO_PIN_SET
+int key4_reg3 = NORMAL_STATE; // key4_reg3 dùng để xử lý nhấn đè
+
 int timer_for_key_press = 200;
 
 int button1_flag = 0;
 int button2_flag = 0;
 int button3_flag = 0;
+int button4_flag = 0;
 // PROCESS BUTTON 1 FUNCTION
 int isButton1Pressed() // nếu nút được nhấn thì hàm trả về 1
 {
@@ -73,8 +81,25 @@ void flag3Process()
 	button3_flag = 1;
 }
 
+//PROCESS BUTTON 4 FUNCTION
+int isButton4Pressed()
+{
+	if(button4_flag == 1)
+	{
+		button4_flag = 0;
+		return 1;
+	}
+	else return 0;
+}
+void flag4Process()
+{
+	button4_flag = 1;
+}
+
+
 void getKeyInput()  //goi = timer moi 10ms 1 lan
 {
+	//BUTTON1
 	key1_reg0 = key1_reg1;
 	key1_reg1 = key1_reg2;
 	key1_reg2 = HAL_GPIO_ReadPin(BUTTON1_GPIO_Port, BUTTON1_Pin); // key1_reg2 đọc giá trị của nút nhấn
@@ -98,7 +123,7 @@ void getKeyInput()  //goi = timer moi 10ms 1 lan
 			}
 		}
 	}
-
+	//BUTTON2
 	key2_reg0 = key2_reg1;
 	key2_reg1 = key2_reg2;
 	key2_reg2 = HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
@@ -122,7 +147,7 @@ void getKeyInput()  //goi = timer moi 10ms 1 lan
 			}
 		}
 	}
-
+	//BUTTON3
 	key3_reg0 = key3_reg1;
 	key3_reg1 = key3_reg2;
 	key3_reg2 = HAL_GPIO_ReadPin(BUTTON3_GPIO_Port, BUTTON3_Pin);
@@ -144,6 +169,31 @@ void getKeyInput()  //goi = timer moi 10ms 1 lan
 			if(timer_for_key_press == 0)
 			{
 				key3_reg3 = NORMAL_STATE;
+			}
+		}
+	}
+	//PED_BUTTON
+	key4_reg0 = key4_reg1;
+	key4_reg1 = key4_reg2;
+	key4_reg2 = HAL_GPIO_ReadPin(PED_BUTTON_GPIO_Port, PED_BUTTON_Pin);
+	if(key4_reg0 == key4_reg1 && key4_reg1 == key4_reg2)
+	{
+		if(key4_reg2 != key4_reg3)
+		{
+			key4_reg3 = key4_reg2;
+			if(key4_reg2 == PRESSED_STATE)
+			{
+				flag4Process();
+				timer_for_key_press = 200;
+			}
+		}
+
+		else
+		{
+			timer_for_key_press--;
+			if(timer_for_key_press == 0)
+			{
+				key4_reg3 = NORMAL_STATE;
 			}
 		}
 	}
